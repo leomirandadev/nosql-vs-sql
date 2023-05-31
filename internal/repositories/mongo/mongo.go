@@ -20,7 +20,8 @@ func New(conn *mongo.Database) repositories.RepositoriesDoer {
 func (m mongoImpl) GetUsers(ctx context.Context) ([]entities.User, error) {
 	result := make([]entities.User, 0)
 
-	cur, err := m.conn.Collection("users").Find(ctx, bson.D{})
+	// TODO complete pipeline to aggregate collections
+	cur, err := m.conn.Collection("users").Aggregate(ctx, mongo.Pipeline{})
 	if err != nil {
 		return result, err
 	}
@@ -34,16 +35,19 @@ func (m mongoImpl) GetUsers(ctx context.Context) ([]entities.User, error) {
 		return result, err
 	}
 
-	return []entities.User{}, nil
+	return result, nil
 }
 
 func (m mongoImpl) GetUserByID(ctx context.Context, id string) (user entities.User, err error) {
 
-	cur, err := m.conn.Collection("users").Find(ctx, bson.D{
-		{
-			Key:   "_id",
-			Value: id,
-		},
+	getByID := bson.D{{
+		Key:   "$match",
+		Value: bson.M{"_id": id},
+	}}
+
+	// TODO complete pipeline to aggregate collections
+	cur, err := m.conn.Collection("users").Aggregate(ctx, mongo.Pipeline{
+		getByID,
 	})
 
 	if err != nil {
