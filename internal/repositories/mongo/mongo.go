@@ -3,10 +3,8 @@ package mongo
 import (
 	"context"
 	"errors"
-	"log"
 	"mongo-vs-postgres/internal/entities"
 	"mongo-vs-postgres/internal/repositories"
-	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -24,7 +22,6 @@ func New(conn *mongo.Database) repositories.RepositoriesDoer {
 func (m mongoImpl) GetUsers(ctx context.Context) ([]entities.User, error) {
 	result := make([]entities.User, 0)
 
-	requestNow := time.Now()
 	// TODO complete pipeline to aggregate collections
 	cur, err := m.conn.Collection("users").Aggregate(ctx, mongo.Pipeline{
 		lookupCity,
@@ -40,7 +37,6 @@ func (m mongoImpl) GetUsers(ctx context.Context) ([]entities.User, error) {
 	if err != nil {
 		return result, err
 	}
-	log.Println(time.Since(requestNow))
 
 	if err != nil {
 		return result, err
@@ -69,7 +65,6 @@ func (m mongoImpl) GetUserByID(ctx context.Context, id string) (user entities.Us
 		Value: bson.M{"_id": objectId},
 	}}
 
-	requestNow := time.Now()
 	// TODO complete pipeline to aggregate collections
 	cur, err := m.conn.Collection("users").Aggregate(ctx, mongo.Pipeline{
 		getByID,
@@ -83,7 +78,6 @@ func (m mongoImpl) GetUserByID(ctx context.Context, id string) (user entities.Us
 		unwindName,
 		unwindCountry,
 	})
-	log.Println(time.Since(requestNow))
 
 	if err != nil {
 		return user, err

@@ -2,19 +2,17 @@ package main
 
 import (
 	"context"
-	"database/sql"
 	"log"
+	"mongo-vs-postgres/configs"
 	"mongo-vs-postgres/internal/repositories/postgres"
 	"mongo-vs-postgres/internal/usecases/users"
-
-	_ "github.com/lib/pq"
 )
 
 func main() {
 	log.Println("RUNNING POSTGRES GET")
 
 	ctx := context.Background()
-	postgressConn := newPostgresConn()
+	postgressConn := configs.NewPostgresConn()
 	repo := postgres.New(postgressConn)
 
 	usersUseCase := users.New(repo)
@@ -32,12 +30,4 @@ func main() {
 		return
 	}
 	log.Println(user)
-}
-
-func newPostgresConn() *sql.DB {
-	conn, err := sql.Open("postgres", "user=root password=root dbname=mongovspostgres host=localhost port=5432 sslmode=disable")
-	if err != nil {
-		log.Fatal("[ERROR]", err)
-	}
-	return conn
 }
