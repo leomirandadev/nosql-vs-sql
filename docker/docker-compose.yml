@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  mongodb:
+    image: mongo:5.0
+    ports:
+      - 27017:27017
+    volumes:
+      - ~/apps/mongo:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: mongo_bench
+  
+  postgres:
+    container_name: postgres_container
+    image: postgres:14.1-alpine
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+volumes:
+    postgres:
