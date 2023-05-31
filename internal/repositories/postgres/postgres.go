@@ -6,6 +6,7 @@ import (
 	"log"
 	"mongo-vs-postgres/internal/entities"
 	"mongo-vs-postgres/internal/repositories"
+	"time"
 )
 
 type postgresImpl struct {
@@ -18,6 +19,8 @@ func New(conn *sql.DB) repositories.RepositoriesDoer {
 
 func (p postgresImpl) GetUsers(ctx context.Context) ([]entities.User, error) {
 	users := make([]entities.User, 0)
+
+	requestNow := time.Now()
 	rows, err := p.conn.QueryContext(ctx, `
 		SELECT 
 			users.id,
@@ -29,6 +32,7 @@ func (p postgresImpl) GetUsers(ctx context.Context) ([]entities.User, error) {
 		INNER JOIN cities ON users.city_id = cities.id
 		INNER JOIN states ON cities.state_id = states.id
 	`)
+	log.Println(time.Since(requestNow))
 
 	if err != nil {
 		return users, err
@@ -52,6 +56,7 @@ func (p postgresImpl) GetUsers(ctx context.Context) ([]entities.User, error) {
 func (p postgresImpl) GetUserByID(ctx context.Context, id string) (entities.User, error) {
 	var user entities.User
 
+	requestNow := time.Now()
 	query := p.conn.QueryRowContext(ctx, `
 		SELECT 
 			users.id,
@@ -64,6 +69,7 @@ func (p postgresImpl) GetUserByID(ctx context.Context, id string) (entities.User
 		INNER JOIN states ON cities.state_id = states.id
 		WHERE users.id = $1
 	`, id)
+	log.Println(time.Since(requestNow))
 
 	if err := query.Err(); err != nil {
 		log.Println("here")
