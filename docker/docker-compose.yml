@@ -9,15 +9,13 @@ services:
       - mongodb:/data/db
     environment:
       MONGO_INITDB_DATABASE: mongovspostgres
-  
+
   postgres:
-    container_name: postgres_container
     image: postgres:14.1-alpine
     environment:
       POSTGRES_DB: mongovspostgres
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
        - postgres:/data/postgres
     ports:
