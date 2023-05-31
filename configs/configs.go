@@ -2,10 +2,10 @@ package configs
 
 import (
 	"context"
-	"database/sql"
 	"log"
 	"time"
 
+	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -23,10 +23,11 @@ func NewConnMongo() *mongo.Client {
 	return client
 }
 
-func NewPostgresConn() *sql.DB {
-	conn, err := sql.Open("postgres", "user=root password=root dbname=mongovspostgres host=localhost port=5432 sslmode=disable")
+func NewPostgresConn() *sqlx.DB {
+	conn, err := sqlx.Connect("postgres", "user=root password=root dbname=mongovspostgres host=localhost port=5432 sslmode=disable")
 	if err != nil {
 		log.Fatal("[ERROR]", err)
 	}
+
 	return conn
 }
