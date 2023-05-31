@@ -27,7 +27,7 @@ func main() {
 	}
 	log.Println(users)
 
-	user, err := usersUseCase.GetByID(ctx, "6477995f939fc4752dc8d084")
+	user, err := usersUseCase.GetByID(ctx, "6477a1dc939fc4752dc8d085")
 	if err != nil {
 		log.Fatalf("[ERROR] %v", err)
 		return
