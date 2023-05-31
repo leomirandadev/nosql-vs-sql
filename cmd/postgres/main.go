@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	log.Fatal("RUNNING POSTGRES GET")
+	log.Println("RUNNING POSTGRES GET")
 
 	ctx := context.Background()
 	postgressConn := newPostgresConn()
@@ -21,23 +21,23 @@ func main() {
 
 	users, err := usersUseCase.GetAll(ctx)
 	if err != nil {
-		log.Println("[ERROR]", err)
+		log.Fatalf("[ERROR] %v", err)
 		return
 	}
 	log.Println(users)
 
 	user, err := usersUseCase.GetByID(ctx, "1")
 	if err != nil {
-		log.Println("[ERROR]", err)
+		log.Fatalf("[ERROR] %v", err)
 		return
 	}
 	log.Println(user)
 }
 
 func newPostgresConn() *sql.DB {
-	conn, err := sql.Open("postgres", "root:root@tcp(127.0.0.1:3306)/your_database_name")
+	conn, err := sql.Open("postgres", "user=root password=root dbname=mongovspostgres host=localhost port=5432 sslmode=disable")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("[ERROR]", err)
 	}
 	return conn
 }

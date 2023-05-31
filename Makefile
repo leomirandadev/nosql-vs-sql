@@ -1,13 +1,13 @@
 DB_CONNECTION = "user=root password=root dbname=mongovspostgres host=localhost port=5432 sslmode=disable"
 
 install:
-	go install github.com/pressly/goose/v3/cmd/goose@latest
+	@go install github.com/pressly/goose/v3/cmd/goose@latest
 
 db-up:
-	docker compose -f "docker/docker-compose.yml" up -d --build
+	@docker compose -f "docker/docker-compose.yml" up -d --build
 
 db-down:
-	docker compose -f "docker/docker-compose.yml" down
+	@docker compose -f "docker/docker-compose.yml" down
 
 mig-status-postgres: 
 	@goose postgres $(DB_CONNECTION) status
@@ -19,7 +19,7 @@ mig-up-postgres:
 	@goose -dir ./migrations/postgres postgres $(DB_CONNECTION) up
 
 mig-down-postgres: 
-	goose -dir ./migrations/postgres postgres $(DB_CONNECTION) down
+	@goose -dir ./migrations/postgres postgres $(DB_CONNECTION) down
 
 mig-status: 
 	@make mig-status-postgres
@@ -31,7 +31,7 @@ mig-down:
 	@make mig-down-postgres
 
 run-postgres:
-	go run cmd/postgres/*.go
+	@go run cmd/postgres/*.go
 
 run-mongo:
-	go run cmd/mongo/*.go
+	@go run cmd/mongo/*.go

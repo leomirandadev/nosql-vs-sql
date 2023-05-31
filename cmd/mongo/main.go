@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	log.Fatal("RUNNING MONGO GET")
+	log.Println("RUNNING MONGO GET")
 
 	ctx := context.Background()
 	mongoConn := newConnMongo().Database("testing")
@@ -22,14 +22,14 @@ func main() {
 
 	users, err := usersUseCase.GetAll(ctx)
 	if err != nil {
-		log.Println("[ERROR]", err)
+		log.Fatalf("[ERROR] %v", err)
 		return
 	}
 	log.Println(users)
 
 	user, err := usersUseCase.GetByID(ctx, "1")
 	if err != nil {
-		log.Println("[ERROR]", err)
+		log.Fatalf("[ERROR] %v", err)
 		return
 	}
 	log.Println(user)
