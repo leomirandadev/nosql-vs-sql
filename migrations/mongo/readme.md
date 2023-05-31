@@ -2,9 +2,44 @@
 
 use mongovspostgres
 
-db.states.insert({name: "SC", country: "Brasil"})
+db.states.insertMany([
+    {name: "SC", country: "Brasil"},
+    {name: "SP", country: "Brasil"},
+    {name: "PR", country: "Brasil"},
+    {name: "RS", country: "Brasil"},
+    {name: "ES", country: "Brasil"},
+])
 
-db.cities.insert({name: "Joinville", state_id:ObjectId("647798d3939fc4752dc8d081")})
+db.cities.insertMany([
+    {
+        name: "Joinville",
+        state_id:ObjectId("647798d3939fc4752dc8d081"),
+    },
+    {
+        name: "Araquari",
+        state_id:ObjectId("647798d3939fc4752dc8d081"),
+    },
+    {
+        name: "São Francisco do Sul",
+        state_id:ObjectId("647798d3939fc4752dc8d081"),
+    },
+    {
+        name: "Blumenau",
+        state_id:ObjectId("647798d3939fc4752dc8d081"),
+    },
+    {
+        name: "Itajaí",
+        state_id:ObjectId("647798d3939fc4752dc8d081"),
+    },
+    {
+        name: "Brusque",
+        state_id:ObjectId("647798d3939fc4752dc8d081"),
+    },
+    {
+        name: "Chapecó",
+        state_id:ObjectId("647798d3939fc4752dc8d081"),
+    },
+])
 
 db.users.insertMany([
     {name: "Leonardo Miranda 0", city_id: ObjectId("6477991c939fc4752dc8d082")},

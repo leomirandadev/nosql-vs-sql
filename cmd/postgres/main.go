@@ -22,7 +22,7 @@ func main() {
 		log.Fatalf("[ERROR] %v", err)
 		return
 	}
-	log.Println(users)
+	log.Println("qty users:", len(users))
 
 	user, err := usersUseCase.GetByID(ctx, "1")
 	if err != nil {
