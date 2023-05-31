@@ -42,6 +42,6 @@ func BenchmarkGetByIDPostgres(b *testing.B) {
 
 func BenchmarkGetByIDMongo(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		usersUseCaseMongo.GetByID(ctx, "6477a1dc939fc4752dc8d085")
+		usersUseCaseMongo.GetByID(ctx, "6477c2ffc1adaf0e33063c09")
 	}
 }

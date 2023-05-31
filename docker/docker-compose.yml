@@ -6,7 +6,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - ~/apps/mongo:/data/db
+      - mongodb:/data/db
     environment:
       MONGO_INITDB_DATABASE: mongovspostgres
   
@@ -26,3 +26,4 @@ services:
 
 volumes:
     postgres:
+    mongodb:

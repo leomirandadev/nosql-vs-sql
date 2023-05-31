@@ -27,7 +27,7 @@ func main() {
 	log.Println(time.Since(now), "qty users:", len(users))
 
 	now = time.Now()
-	user, err := usersUseCase.GetByID(ctx, "6477a1dc939fc4752dc8d085")
+	user, err := usersUseCase.GetByID(ctx, "6477c2ffc1adaf0e33063c09")
 	if err != nil {
 		log.Fatalf("[ERROR] %v", err)
 		return
