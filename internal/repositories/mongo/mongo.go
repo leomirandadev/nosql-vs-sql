@@ -2,10 +2,12 @@ package mongo
 
 import (
 	"context"
+	"errors"
 	"mongo-vs-postgres/internal/entities"
 	"mongo-vs-postgres/internal/repositories"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -39,10 +41,14 @@ func (m mongoImpl) GetUsers(ctx context.Context) ([]entities.User, error) {
 }
 
 func (m mongoImpl) GetUserByID(ctx context.Context, id string) (user entities.User, err error) {
+	objectId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return user, errors.New("invalid id")
+	}
 
 	getByID := bson.D{{
 		Key:   "$match",
-		Value: bson.M{"_id": id},
+		Value: bson.M{"_id": objectId},
 	}}
 
 	// TODO complete pipeline to aggregate collections
@@ -59,9 +65,14 @@ func (m mongoImpl) GetUserByID(ctx context.Context, id string) (user entities.Us
 		return user, err
 	}
 
-	if err = cur.All(ctx, &user); err != nil {
+	var results []entities.User
+	if err = cur.All(ctx, &results); err != nil {
 		return user, err
 	}
 
-	return user, nil
+	if len(results) < 1 {
+		return user, errors.New("user not found")
+	}
+
+	return results[0], nil
 }

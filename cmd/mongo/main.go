@@ -15,7 +15,7 @@ func main() {
 	log.Println("RUNNING MONGO GET")
 
 	ctx := context.Background()
-	mongoConn := newConnMongo().Database("testing")
+	mongoConn := newConnMongo().Database("mongovspostgres")
 	repo := mongoRepo.New(mongoConn)
 
 	usersUseCase := users.New(repo)
@@ -27,7 +27,7 @@ func main() {
 	}
 	log.Println(users)
 
-	user, err := usersUseCase.GetByID(ctx, "1")
+	user, err := usersUseCase.GetByID(ctx, "6477995f939fc4752dc8d084")
 	if err != nil {
 		log.Fatalf("[ERROR] %v", err)
 		return
