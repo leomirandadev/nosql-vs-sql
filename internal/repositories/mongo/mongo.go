@@ -37,10 +37,6 @@ func (m mongoImpl) GetUsers(ctx context.Context) ([]entities.User, error) {
 	if err != nil {
 		return result, err
 	}
-
-	if err != nil {
-		return result, err
-	}
 	defer cur.Close(ctx)
 
 	if err := cur.Err(); err != nil {
