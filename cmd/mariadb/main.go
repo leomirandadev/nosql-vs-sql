@@ -18,8 +18,8 @@ func main() {
 }
 
 var ctx = context.Background()
-var postgressConn = configs.NewPostgresConn()
-var repo = sql.New(postgressConn)
+var mariadbConn = configs.NewMariaDBConn()
+var repo = sql.New(mariadbConn)
 var usersUseCase = users.New(repo)
 
 func exec() {

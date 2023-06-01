@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -25,6 +26,15 @@ func NewConnMongo() *mongo.Client {
 
 func NewPostgresConn() *sqlx.DB {
 	conn, err := sqlx.Connect("postgres", "user=root password=root dbname=mongovspostgres host=localhost port=5432 sslmode=disable")
+	if err != nil {
+		log.Fatal("[ERROR]", err)
+	}
+
+	return conn
+}
+
+func NewMariaDBConn() *sqlx.DB {
+	conn, err := sqlx.Connect("mysql", "root:root@(localhost:3306)/mongovspostgres")
 	if err != nil {
 		log.Fatal("[ERROR]", err)
 	}

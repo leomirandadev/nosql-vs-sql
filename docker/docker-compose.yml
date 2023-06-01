@@ -23,6 +23,19 @@ services:
       - "5432:5432"
     restart: unless-stopped
 
+  mariadb:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mongovspostgres
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    volumes:
+      - mariadb:/var/lib/mysql
+      - ./dev/mariadb:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
 volumes:
     postgres:
     mongodb:
+    mariadb:

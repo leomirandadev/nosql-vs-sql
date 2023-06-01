@@ -1,4 +1,4 @@
-package postgres
+package sql
 
 import (
 	"context"
@@ -47,7 +47,7 @@ func (p postgresImpl) GetUserByID(ctx context.Context, id string) (entities.User
 		FROM users 
 		INNER JOIN cities ON users.city_id = cities.id
 		INNER JOIN states ON cities.state_id = states.id
-		WHERE users.id = $1
+		WHERE users.id = ?
 	`, id)
 
 	if err != nil {
