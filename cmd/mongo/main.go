@@ -12,12 +12,17 @@ import (
 func main() {
 	log.Println("RUNNING MONGO GET")
 
-	ctx := context.Background()
-	mongoConn := configs.NewConnMongo().Database("mongovspostgres")
-	repo := mongoRepo.New(mongoConn)
+	for i := 0; i < 3; i++ {
+		exec()
+	}
+}
 
-	usersUseCase := users.New(repo)
+var ctx = context.Background()
+var mongoConn = configs.NewConnMongo().Database("mongovspostgres")
+var repo = mongoRepo.New(mongoConn)
+var usersUseCase = users.New(repo)
 
+func exec() {
 	now := time.Now()
 	users, err := usersUseCase.GetAll(ctx)
 	if err != nil {

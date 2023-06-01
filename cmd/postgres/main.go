@@ -12,12 +12,17 @@ import (
 func main() {
 	log.Println("RUNNING POSTGRES GET")
 
-	ctx := context.Background()
-	postgressConn := configs.NewPostgresConn()
-	repo := postgres.New(postgressConn)
+	for i := 0; i < 3; i++ {
+		exec()
+	}
+}
 
-	usersUseCase := users.New(repo)
+var ctx = context.Background()
+var postgressConn = configs.NewPostgresConn()
+var repo = postgres.New(postgressConn)
+var usersUseCase = users.New(repo)
 
+func exec() {
 	now := time.Now()
 	users, err := usersUseCase.GetAll(ctx)
 	if err != nil {
