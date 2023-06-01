@@ -16,8 +16,9 @@ services:
       POSTGRES_DB: mongovspostgres
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
+      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-       - postgres:/data/postgres
+       - postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     restart: unless-stopped
