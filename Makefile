@@ -54,5 +54,5 @@ run-mariadb:
 run-mongo:
 	@go run cmd/mongo/*.go
 
-run-bench:
+bench:
 	@go test -v ./... -bench=. -benchmem
