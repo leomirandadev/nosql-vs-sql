@@ -19,10 +19,9 @@ func New(conn *mongo.Database) repositories.RepositoriesDoer {
 	return mongoImpl{conn}
 }
 
-func (m mongoImpl) GetUsers(ctx context.Context) ([]entities.UserDetails, error) {
+func (m mongoImpl) GetUsersDetails(ctx context.Context) ([]entities.UserDetails, error) {
 	result := make([]entities.UserDetails, 0)
 
-	// TODO complete pipeline to aggregate collections
 	cur, err := m.conn.Collection("users").Aggregate(ctx, mongo.Pipeline{
 		lookupCity,
 		unwindCity,
@@ -50,7 +49,7 @@ func (m mongoImpl) GetUsers(ctx context.Context) ([]entities.UserDetails, error)
 	return result, nil
 }
 
-func (m mongoImpl) GetUserByID(ctx context.Context, id string) (user entities.UserDetails, err error) {
+func (m mongoImpl) GetUserDetailsByID(ctx context.Context, id string) (user entities.UserDetails, err error) {
 	objectId, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return user, errors.New("invalid id")
@@ -61,7 +60,6 @@ func (m mongoImpl) GetUserByID(ctx context.Context, id string) (user entities.Us
 		Value: bson.M{"_id": objectId},
 	}}
 
-	// TODO complete pipeline to aggregate collections
 	cur, err := m.conn.Collection("users").Aggregate(ctx, mongo.Pipeline{
 		getByID,
 		lookupCity,
@@ -94,6 +92,46 @@ func (m mongoImpl) GetUserByID(ctx context.Context, id string) (user entities.Us
 	}
 
 	return results[0], nil
+}
+
+func (m mongoImpl) GetStates(ctx context.Context) ([]entities.State, error) {
+	result := make([]entities.State, 0)
+
+	cur, err := m.conn.Collection("states").Find(ctx, bson.M{})
+	if err != nil {
+		return result, err
+	}
+	defer cur.Close(ctx)
+
+	if err := cur.Err(); err != nil {
+		return result, err
+	}
+
+	if err = cur.All(ctx, &result); err != nil {
+		return result, err
+	}
+
+	return result, nil
+}
+
+func (m mongoImpl) GetStateByID(ctx context.Context, id string) (user entities.State, err error) {
+	objectId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return user, errors.New("invalid id")
+	}
+
+	cur := m.conn.Collection("states").FindOne(ctx, bson.M{"_id": objectId}, nil)
+
+	if err := cur.Err(); err != nil {
+		return user, err
+	}
+
+	var result entities.State
+	if err = cur.Decode(&result); err != nil {
+		return user, err
+	}
+
+	return result, nil
 }
 
 var lookupCity = bson.D{{

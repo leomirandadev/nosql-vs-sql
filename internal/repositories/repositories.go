@@ -6,6 +6,8 @@ import (
 )
 
 type RepositoriesDoer interface {
-	GetUsers(ctx context.Context) ([]entities.UserDetails, error)
-	GetUserByID(ctx context.Context, id string) (entities.UserDetails, error)
+	GetStates(ctx context.Context) ([]entities.State, error)
+	GetStateByID(ctx context.Context, id string) (entities.State, error)
+	GetUsersDetails(ctx context.Context) ([]entities.UserDetails, error)
+	GetUserDetailsByID(ctx context.Context, id string) (entities.UserDetails, error)
 }

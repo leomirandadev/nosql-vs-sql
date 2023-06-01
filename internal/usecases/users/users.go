@@ -11,12 +11,17 @@ type usersUseCase struct {
 	repo repositories.RepositoriesDoer
 }
 
-func New(repo repositories.RepositoriesDoer) usersUseCase {
+type UsersUseCase interface {
+	GetDetailsAll(ctx context.Context) (users []entities.UserDetails, err error)
+	GetDetailsByID(ctx context.Context, id string) (user entities.UserDetails, err error)
+}
+
+func New(repo repositories.RepositoriesDoer) UsersUseCase {
 	return usersUseCase{repo}
 }
 
 func (u usersUseCase) GetDetailsAll(ctx context.Context) (users []entities.UserDetails, err error) {
-	users, err = u.repo.GetUsers(ctx)
+	users, err = u.repo.GetUsersDetails(ctx)
 	return users, err
 }
 
@@ -25,7 +30,7 @@ func (u usersUseCase) GetDetailsByID(ctx context.Context, id string) (user entit
 		return user, errors.New("you must to send the id")
 	}
 
-	user, err = u.repo.GetUserByID(ctx, id)
+	user, err = u.repo.GetUserDetailsByID(ctx, id)
 
 	return user, err
 }
