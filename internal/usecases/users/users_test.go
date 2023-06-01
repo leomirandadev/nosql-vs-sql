@@ -2,9 +2,9 @@ package users
 
 import (
 	"context"
-	"mongo-vs-postgres/configs"
-	mongoRepo "mongo-vs-postgres/internal/repositories/mongo"
-	"mongo-vs-postgres/internal/repositories/sql"
+	"nosql-vs-sql/configs"
+	mongoRepo "nosql-vs-sql/internal/repositories/mongo"
+	"nosql-vs-sql/internal/repositories/sql"
 	"testing"
 
 	_ "github.com/lib/pq"
@@ -19,46 +19,46 @@ var usersUseCaseMongo = New(repoMongo)
 
 // postgres
 var postgressConn = configs.NewPostgresConn()
-var repoPostgres = sql.New(postgressConn)
+var repoPostgres = sql.New(postgressConn, true)
 var usersUseCasePostgres = New(repoPostgres)
 
 // mariadb
 var mariadbConn = configs.NewPostgresConn()
-var repoMariaDB = sql.New(mariadbConn)
+var repoMariaDB = sql.New(mariadbConn, false)
 var usersUseCaseMariaDB = New(repoMariaDB)
 
-func BenchmarkGetAllPostgres(b *testing.B) {
+func BenchmarkGetDetailsAllPostgres(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		usersUseCasePostgres.GetAll(ctx)
+		usersUseCasePostgres.GetDetailsAll(ctx)
 	}
 }
 
-func BenchmarkGetAllMariaDB(b *testing.B) {
+func BenchmarkGetDetailsAllMariaDB(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		usersUseCaseMariaDB.GetAll(ctx)
+		usersUseCaseMariaDB.GetDetailsAll(ctx)
 	}
 }
 
-func BenchmarkGetAllMongo(b *testing.B) {
+func BenchmarkGetDetailsAllMongo(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		usersUseCaseMongo.GetAll(ctx)
+		usersUseCaseMongo.GetDetailsAll(ctx)
 	}
 }
 
-func BenchmarkGetByIDPostgres(b *testing.B) {
+func BenchmarkGetDetailsByIDPostgres(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		usersUseCasePostgres.GetByID(ctx, "1")
+		usersUseCasePostgres.GetDetailsByID(ctx, "1")
 	}
 }
 
-func BenchmarkGetByIDMariaDB(b *testing.B) {
+func BenchmarkGetDetailsByIDMariaDB(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		usersUseCaseMariaDB.GetByID(ctx, "1")
+		usersUseCaseMariaDB.GetDetailsByID(ctx, "1")
 	}
 }
 
-func BenchmarkGetByIDMongo(b *testing.B) {
+func BenchmarkGetDetailsByIDMongo(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		usersUseCaseMongo.GetByID(ctx, "6477c2ffc1adaf0e33063c09")
+		usersUseCaseMongo.GetDetailsByID(ctx, "6477c2ffc1adaf0e33063c09")
 	}
 }

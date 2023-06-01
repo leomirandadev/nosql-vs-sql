@@ -3,8 +3,8 @@ package mongo
 import (
 	"context"
 	"errors"
-	"mongo-vs-postgres/internal/entities"
-	"mongo-vs-postgres/internal/repositories"
+	"nosql-vs-sql/internal/entities"
+	"nosql-vs-sql/internal/repositories"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -19,8 +19,8 @@ func New(conn *mongo.Database) repositories.RepositoriesDoer {
 	return mongoImpl{conn}
 }
 
-func (m mongoImpl) GetUsers(ctx context.Context) ([]entities.User, error) {
-	result := make([]entities.User, 0)
+func (m mongoImpl) GetUsers(ctx context.Context) ([]entities.UserDetails, error) {
+	result := make([]entities.UserDetails, 0)
 
 	// TODO complete pipeline to aggregate collections
 	cur, err := m.conn.Collection("users").Aggregate(ctx, mongo.Pipeline{
@@ -50,7 +50,7 @@ func (m mongoImpl) GetUsers(ctx context.Context) ([]entities.User, error) {
 	return result, nil
 }
 
-func (m mongoImpl) GetUserByID(ctx context.Context, id string) (user entities.User, err error) {
+func (m mongoImpl) GetUserByID(ctx context.Context, id string) (user entities.UserDetails, err error) {
 	objectId, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return user, errors.New("invalid id")
@@ -84,7 +84,7 @@ func (m mongoImpl) GetUserByID(ctx context.Context, id string) (user entities.Us
 		return user, err
 	}
 
-	var results []entities.User
+	var results []entities.UserDetails
 	if err = cur.All(ctx, &results); err != nil {
 		return user, err
 	}

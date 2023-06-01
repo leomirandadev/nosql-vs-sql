@@ -2,22 +2,23 @@ package sql
 
 import (
 	"context"
-	"mongo-vs-postgres/internal/entities"
-	"mongo-vs-postgres/internal/repositories"
+	"nosql-vs-sql/internal/entities"
+	"nosql-vs-sql/internal/repositories"
 
 	"github.com/jmoiron/sqlx"
 )
 
-type postgresImpl struct {
-	conn *sqlx.DB
+type sqlImpl struct {
+	conn       *sqlx.DB
+	isPostgres bool
 }
 
-func New(conn *sqlx.DB) repositories.RepositoriesDoer {
-	return postgresImpl{conn}
+func New(conn *sqlx.DB, isPostgres bool) repositories.RepositoriesDoer {
+	return sqlImpl{conn, isPostgres}
 }
 
-func (p postgresImpl) GetUsers(ctx context.Context) ([]entities.User, error) {
-	users := make([]entities.User, 0)
+func (p sqlImpl) GetUsers(ctx context.Context) ([]entities.UserDetails, error) {
+	users := make([]entities.UserDetails, 0)
 
 	err := p.conn.SelectContext(ctx, &users, `
 		SELECT 
@@ -34,8 +35,13 @@ func (p postgresImpl) GetUsers(ctx context.Context) ([]entities.User, error) {
 	return users, err
 }
 
-func (p postgresImpl) GetUserByID(ctx context.Context, id string) (entities.User, error) {
-	var user entities.User
+func (p sqlImpl) GetUserByID(ctx context.Context, id string) (entities.UserDetails, error) {
+	var user entities.UserDetails
+
+	bindVar := "?"
+	if p.isPostgres {
+		bindVar = "$1"
+	}
 
 	err := p.conn.GetContext(ctx, &user, `
 		SELECT 
@@ -47,7 +53,7 @@ func (p postgresImpl) GetUserByID(ctx context.Context, id string) (entities.User
 		FROM users 
 		INNER JOIN cities ON users.city_id = cities.id
 		INNER JOIN states ON cities.state_id = states.id
-		WHERE users.id = ?
+		WHERE users.id = `+bindVar+`
 	`, id)
 
 	if err != nil {

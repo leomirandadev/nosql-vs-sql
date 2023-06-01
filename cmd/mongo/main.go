@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"log"
-	"mongo-vs-postgres/configs"
-	mongoRepo "mongo-vs-postgres/internal/repositories/mongo"
-	"mongo-vs-postgres/internal/usecases/users"
+	"nosql-vs-sql/configs"
+	mongoRepo "nosql-vs-sql/internal/repositories/mongo"
+	"nosql-vs-sql/internal/usecases/users"
 	"time"
 )
 
@@ -24,7 +24,7 @@ var usersUseCase = users.New(repo)
 
 func exec() {
 	now := time.Now()
-	users, err := usersUseCase.GetAll(ctx)
+	users, err := usersUseCase.GetDetailsAll(ctx)
 	if err != nil {
 		log.Fatalf("[ERROR] %v", err)
 		return
@@ -32,7 +32,7 @@ func exec() {
 	log.Println(time.Since(now), "qty users:", len(users))
 
 	now = time.Now()
-	user, err := usersUseCase.GetByID(ctx, "6477c2ffc1adaf0e33063c09")
+	user, err := usersUseCase.GetDetailsByID(ctx, "6477c2ffc1adaf0e33063c09")
 	if err != nil {
 		log.Fatalf("[ERROR] %v", err)
 		return

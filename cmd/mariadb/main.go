@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"log"
-	"mongo-vs-postgres/configs"
-	"mongo-vs-postgres/internal/repositories/sql"
-	"mongo-vs-postgres/internal/usecases/users"
+	"nosql-vs-sql/configs"
+	"nosql-vs-sql/internal/repositories/sql"
+	"nosql-vs-sql/internal/usecases/users"
 	"time"
 )
 
@@ -19,12 +19,12 @@ func main() {
 
 var ctx = context.Background()
 var mariadbConn = configs.NewMariaDBConn()
-var repo = sql.New(mariadbConn)
+var repo = sql.New(mariadbConn, false)
 var usersUseCase = users.New(repo)
 
 func exec() {
 	now := time.Now()
-	users, err := usersUseCase.GetAll(ctx)
+	users, err := usersUseCase.GetDetailsAll(ctx)
 	if err != nil {
 		log.Fatalf("[ERROR] %v", err)
 		return
@@ -32,7 +32,7 @@ func exec() {
 	log.Println(time.Since(now), "qty users:", len(users))
 
 	now = time.Now()
-	user, err := usersUseCase.GetByID(ctx, "1")
+	user, err := usersUseCase.GetDetailsByID(ctx, "1")
 	if err != nil {
 		log.Fatalf("[ERROR] %v", err)
 		return

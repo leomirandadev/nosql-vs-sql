@@ -1,16 +1,16 @@
-module mongo-vs-postgres
+module nosql-vs-sql
 
 go 1.20
 
 require (
+	github.com/go-sql-driver/mysql v1.7.1
+	github.com/jmoiron/sqlx v1.3.5
 	github.com/lib/pq v1.10.9
 	go.mongodb.org/mongo-driver v1.11.6
 )
 
 require (
-	github.com/go-sql-driver/mysql v1.7.1 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
-	github.com/jmoiron/sqlx v1.3.5 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe // indirect
 	github.com/pkg/errors v0.9.1 // indirect
