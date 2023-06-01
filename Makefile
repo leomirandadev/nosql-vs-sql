@@ -35,3 +35,6 @@ run-postgres:
 
 run-mongo:
 	@go run cmd/mongo/*.go
+
+run-bench:
+	@go test -v ./... -bench=. -benchmem
