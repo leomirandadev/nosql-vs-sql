@@ -6,8 +6,6 @@ import (
 	mongoRepo "nosql-vs-sql/internal/repositories/mongo"
 	"nosql-vs-sql/internal/repositories/sql"
 	"testing"
-
-	_ "github.com/lib/pq"
 )
 
 var ctx = context.Background()

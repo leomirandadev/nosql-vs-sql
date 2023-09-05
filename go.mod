@@ -6,7 +6,6 @@ require (
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/jackc/pgx/v5 v5.3.1
 	github.com/jmoiron/sqlx v1.3.5
-	github.com/lib/pq v1.10.9
 	go.mongodb.org/mongo-driver v1.11.6
 )
 
@@ -15,6 +14,7 @@ require (
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
+	github.com/lib/pq v1.10.9 // indirect
 	github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rogpeppe/go-internal v1.10.0 // indirect
